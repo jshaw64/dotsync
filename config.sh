@@ -13,6 +13,19 @@ CONFIG=(
   "${CONF_KEY_DGROUP}${CONF_FS}"
 )
 
+test_basic()
+{
+	config_print
+	config_set $CONF_KEY_FSRC "test value 1"
+	config_print
+	config_set $CONF_KEY_FDST "test value 2"
+	config_print
+	config_set $CONF_KEY_DROOT "test value 3"
+	config_print
+	config_set $CONF_KEY_DGROUP "test value 4"
+	config_print
+}
+
 config_print()
 {
 	local i=0
@@ -61,8 +74,9 @@ config_set()
 }
 
 
-#config_print
-#config_set "query" "CFBundleSomething"
-#config_print
-#config_set "infile" "./Info.plist"
-#config_print
+init()
+{
+	[ "$1" = "test" ] && test_basic
+}
+
+init "$@"
