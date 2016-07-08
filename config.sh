@@ -1,16 +1,16 @@
 #!/bin/bash
 
-CONF_SEPARATOR=":"
-CONF_KEY_QUERY="query"
-CONF_KEY_VALUE="value"
-CONF_KEY_ACTION="action"
-CONF_KEY_INFILE="infile"
+CONF_FS=":"
+CONF_KEY_FSRC="srcfile"
+CONF_KEY_FDST="dstfile"
+CONF_KEY_DROOT="dirroot"
+CONF_KEY_DGROUP="dirgroup"
 
 CONFIG=(
-  "${CONF_KEY_QUERY}${CONF_SEPARATOR}"
-  "${CONF_KEY_VALUE}${CONF_SEPARATOR}"
-  "${CONF_KEY_ACTION}${CONF_SEPARATOR}"
-  "${CONF_KEY_INFILE}${CONF_SEPARATOR}"
+  "${CONF_KEY_FSRC}${CONF_FS}"
+  "${CONF_KEY_FDST}${CONF_FS}"
+  "${CONF_KEY_DROOT}${CONF_FS}"
+  "${CONF_KEY_DGROUP}${CONF_FS}"
 )
 
 config_print()
@@ -50,7 +50,7 @@ config_set()
 	for entry in "${CONFIG[@]}" ; do
 		local key=${entry%%:*}
 		local value=${entry#*:}
-		if [ $key = $set_key ]; then
+		if [ "$key" = "$set_key" ]; then
 			CONFIG[$i]="${key}:${set_val}"
 			break
 		fi
