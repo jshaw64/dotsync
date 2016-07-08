@@ -15,6 +15,32 @@ link()
   done
 }
 
+do_archive()
+{
+	local fsrc="$1"
+	local archivedir="$2"
+
+	mv "$fsrc" "$archivedir"
+}
+
+do_link()
+{
+	local fsrc="$1"
+	local fdst="$2"
+	local droot="$3"
+	local dgroup="$4"
+
+	local dirdst="${droot}/${dgroup}"
+	local filedst="${dirdst}/${fdst}"
+
+	if [ ! -d "$dirdst" ]; then
+		mkdir "$dirdst"
+	fi
+
+	cd "$dirdst"
+	ln -s $filedst $fsrc
+}
+
 
 
 validate_before()
