@@ -4,17 +4,6 @@ E_FSRC=50
 E_DROOT=51
 E_FDST=52
 
-link()
-{
-  for file in $@; do
-    local src="$DIR_SRC/$file"
-    local dst="$DIR_DST/$file"
-    echo "Moving $src to $dst"
-    mv $src $dst
-    echo "Linking $dst to $src"
-    ln -s $dst $src
-  done
-}
 
 do_archive()
 {
