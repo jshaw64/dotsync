@@ -2,6 +2,7 @@
 
 E_FSRC=50
 E_DROOT=51
+E_FDST=52
 
 link()
 {
@@ -41,7 +42,30 @@ do_link()
 	ln -s $filedst $fsrc
 }
 
+validate_after()
+{
+	local fsrc="$1"
+	local fdst="$2"
+	local droot="$3"
+	local dgroup="$4"
+	local archivedir="$5"
 
+	local dirdst="${droot}/${dgroup}"
+	local filedst="${dirdst}/${fdst}"
+	local linktarget="$(readlink $fsrc)"
+	local farchive="${archivedir}/${fsrc##*/}"
+
+	if [ ! -L "$fsrc" ]; then
+		echo "Error: src symlink [$fsrc] not found"
+		exit $E_FSRC
+	elif [ ! "$linktarget" = "$filedst" ]; then
+		echo "Error: src symlink target [$linktarget] does not point to filedst [$filedst]"
+		exit $E_FSRC
+	elif [ ! -e "$farchive" ]; then
+		echo "Error: archive file [$farchive] not found"
+		exit $E_FDST
+	fi
+}
 
 validate_before()
 {
@@ -66,6 +90,8 @@ main()
 {
 	. ./config.sh
 
+	local darchive="${HOME}/dotarchive"
+
 	local i=0
 	local size="${#CONFIG_VALS[@]}"
 	while [ $i -lt $size ]; do
@@ -76,6 +102,9 @@ main()
 		local dgroup=$(config_get "$CONF_KEY_DGROUP")
 		validate_before "$fsrc" "$droot"
 		[ $? -gt 0 ] && exit $?
+		do_archive "$fsrc" "$darchive"
+		do_link "$fsrc" "$fdst" "$droot" "$dgroup"
+		validate_after "$fsrc" "$fdst" "$droot" "$dgroup" "$darchive"
 		(( i++ ))
 	done
 }
