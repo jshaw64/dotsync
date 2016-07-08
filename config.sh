@@ -13,6 +13,11 @@ CONFIG=(
   "${CONF_KEY_DGROUP}${CONF_FS}"
 )
 
+CONFIG_VALS=(
+  "${HOME}/.bash_profile"${CONF_FS}".bash_profile"${CONF_FS}"${HOME}/dotfiles"${CONF_FS}"bash"${CONF_FS}
+  "${HOME}/.bash_profile2"${CONF_FS}".bash_profile2"${CONF_FS}"${HOME}/dotfiles"${CONF_FS}"bash"${CONF_FS}
+)
+
 test_basic()
 {
 	config_print
@@ -35,6 +40,37 @@ config_print()
 		echo "[$i] Key: [$key] Value: [$value]"
 		(( i++ ))
 	done
+}
+
+config_parse()
+{
+	local idx=$1
+	local entry="${CONFIG_VALS[$idx]}"
+	local parsed=()
+
+	OIFS="$IFS"
+	IFS=:
+	local i=0
+	for val in $entry; do
+		local key=
+		case $i in
+			0 )
+				key="$CONF_KEY_FSRC"
+				;;
+			1 ) 
+				key="$CONF_KEY_FDST"
+				;;
+			2 ) 
+				key="$CONF_KEY_DROOT"
+				;;
+			3 )
+				key="$CONF_KEY_DGROUP"
+				;;
+		esac
+		config_set "$key" $val
+		(( i++ ))
+	done
+	IFS="$OIFS"
 }
 
 config_get()
