@@ -14,8 +14,13 @@ CONFIG=(
 )
 
 CONFIG_VALS=(
-  "${HOME}/.bash_profile"${CONF_FS}".bash_profile"${CONF_FS}"${HOME}/dotfiles"${CONF_FS}"bash"${CONF_FS}
-  "${HOME}/.bash_profile2"${CONF_FS}".bash_profile2"${CONF_FS}"${HOME}/dotfiles"${CONF_FS}"bash"${CONF_FS}
+  "${HOME}/.tstfile1"${CONF_FS}".tstfile-renamed"${CONF_FS}"${HOME}/dotfiles"${CONF_FS}"testdir"${CONF_FS}
+)
+
+TEST_CONFIG_VALS=(
+  "${HOME}/Documents/test-data/src/.test1-basic"${CONF_FS}".tst01-renamed"${CONF_FS}"${HOME}/Documents/test-data/dst"${CONF_FS}"test01-basic"${CONF_FS}
+  "${HOME}/Documents/test-data/src/.test2 with spaces in file"${CONF_FS}".tst02-renamed"${CONF_FS}"${HOME}/Documents/test-data/dst"${CONF_FS}"test02 with spaces"${CONF_FS}
+  "${HOME}/Documents/test-data/src/with spaces in dir/.test3"${CONF_FS}".tst03-renamed"${CONF_FS}"${HOME}/Documents/test-data/dst/with spaces in dir"${CONF_FS}"test03"${CONF_FS}
 )
 
 test_basic()
@@ -41,6 +46,37 @@ config_test_conf_vals()
 		config_print
 		(( i++ ))
 	done
+}
+
+config_test_parse()
+{
+	local idx=$1
+	local entry="${TEST_CONFIG_VALS[$idx]}"
+	local parsed=()
+
+	OIFS="$IFS"
+	IFS=:
+	local i=0
+	for val in $entry; do
+		local key=
+		case $i in
+			0 )
+				key="$CONF_KEY_FSRC"
+				;;
+			1 ) 
+				key="$CONF_KEY_FDST"
+				;;
+			2 ) 
+				key="$CONF_KEY_DROOT"
+				;;
+			3 )
+				key="$CONF_KEY_DGROUP"
+				;;
+		esac
+		config_set "$key" $val
+		(( i++ ))
+	done
+	IFS="$OIFS"
 }
 
 config_print()
