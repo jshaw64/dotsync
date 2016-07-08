@@ -31,6 +31,18 @@ test_basic()
 	config_print
 }
 
+config_test_conf_vals()
+{
+	config_print
+	local i=0
+	local size="${#CONFIG_VALS[@]}"
+	while [ $i -lt $size ]; do
+		config_parse $i
+		config_print
+		(( i++ ))
+	done
+}
+
 config_print()
 {
 	local i=0
@@ -112,7 +124,7 @@ config_set()
 
 init()
 {
-	[ "$1" = "test" ] && test_basic
+	[ "$1" = "test" ] && test_basic && config_test_conf_vals
 }
 
 init "$@"
