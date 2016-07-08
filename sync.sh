@@ -54,7 +54,7 @@ do_link()
 	fi
 
 	cd "$dirdst"
-	ln -s $filedst $fsrc
+	ln -s "$filedst" "$fsrc"
 }
 
 validate_after()
@@ -67,8 +67,13 @@ validate_after()
 
 	local dirdst="${droot}/${dgroup}"
 	local filedst="${dirdst}/${fdst}"
-	local linktarget="$(readlink $fsrc)"
+	local linktarget="$(readlink "$fsrc")"
 	local farchive="${archivedir}/${fsrc##*/}"
+
+	echo "$fsrc"
+	echo "$dirdst"
+	echo "$filedst"
+	echo "$linktarget"
 
 	if [ ! -L "$fsrc" ]; then
 		echo "Error: src symlink [$fsrc] not found"
