@@ -3,6 +3,7 @@
 E_FSRC=50
 E_DROOT=51
 E_FDST=52
+E_ARCH=53
 
 do_archive()
 {

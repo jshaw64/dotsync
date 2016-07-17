@@ -4,7 +4,6 @@ E_STATE=70
 
 main()
 {
-    local darchive="${HOME}/dotarchive"
 
     DEBUG=$(config_get "$CONF_KEY_DEBUG")
     VERBOSE=$(config_get "$CONF_KEY_VERBOSE")
@@ -25,11 +24,13 @@ main()
         local fdst=$(config_get "$CONF_KEY_FDST")
         local droot=$(config_get "$CONF_KEY_DROOT")
         local dgroup=$(config_get "$CONF_KEY_DGROUP")
+        local darch=$(config_get "$CONF_KEY_DARCH")
 
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
+        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DARCH}], Value [${darch}]\n"
 
         (( DEBUG || VERBOSE )) && echo "Validating state (before)..."
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
@@ -45,9 +46,9 @@ main()
 
         (( DEBUG || VERBOSE )) && echo "Copying file to archive..."
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [darchive], Value [${darchive}]\n"
+        (( DEBUG || VERBOSE )) && printf "\tKey [darch], Value [${darch}]\n"
 
-        do_archive "$fsrc" "$darchive"
+        do_archive "$fsrc" "$darch"
 
         (( DEBUG || VERBOSE )) && echo "Creating symlink..."
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
@@ -62,9 +63,9 @@ main()
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [darchive], Value [${darchive}]\n"
+        (( DEBUG || VERBOSE )) && printf "\tKey [darch], Value [${darch}]\n"
 
-        validate_after "$fsrc" "$fdst" "$droot" "$dgroup" "$darchive"
+        validate_after "$fsrc" "$fdst" "$droot" "$dgroup" "$darch"
         if [ $? -gt 0 ]; then
             echo "Error: unable to validate state (after)"
             exit $E_STATE

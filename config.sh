@@ -9,6 +9,7 @@ CONF_KEY_FSRC="srcfile"
 CONF_KEY_FDST="dstfile"
 CONF_KEY_DROOT="dirroot"
 CONF_KEY_DGROUP="dirgroup"
+CONF_KEY_DARCH="dirarchive"
 
 conf_active=(
   "${CONF_KEY_FSRC}${CONF_FS}"
@@ -18,6 +19,7 @@ conf_active=(
 
 conf_global=(
   "${CONF_KEY_DROOT}${CONF_FS}${HOME}/Documents/test-data/dst"
+  "${CONF_KEY_DARCH}${CONF_FS}${HOME}/Documents/test-data/arch"
   "${CONF_KEY_DEBUG}${CONF_FS}"1
   "${CONF_KEY_VERBOSE}${CONF_FS}"1
   "${CONF_KEY_DELETE}${CONF_FS}"1
