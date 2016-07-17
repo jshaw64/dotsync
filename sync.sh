@@ -108,9 +108,10 @@ validate_before()
 
 main()
 {
-	[ "$1" = "test" ] && sync_test && exit 0
 
-	. ./config.sh
+    local ctx="${BASH_SOURCE%/*}"
+    if [[ ! -d "$ctx" ]]; then ctx="$PWD"; fi
+    . "$ctx/config.sh"
 
 	local darchive="${HOME}/dotarchive"
 
