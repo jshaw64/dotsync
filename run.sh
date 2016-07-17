@@ -1,5 +1,7 @@
 #!/bin/bash
 
+E_STATE=70
+
 main()
 {
     local darchive="${HOME}/dotarchive"
@@ -31,7 +33,10 @@ main()
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
 
         validate_before "$fsrc" "$droot"
-        [ $? -gt 0 ] && exit $?
+        if [ $? -gt 0 ]; then
+            echo "Error: unable to validate state (before)"
+            exit $E_STATE
+        fi
         
         (( DEBUG || VERBOSE )) && printf "\tSuccessfully validated state (before)\n"
 
@@ -57,6 +62,10 @@ main()
         (( DEBUG || VERBOSE )) && printf "\tKey [darchive], Value [${darchive}]\n"
 
         validate_after "$fsrc" "$fdst" "$droot" "$dgroup" "$darchive"
+        if [ $? -gt 0 ]; then
+            echo "Error: unable to validate state (after)"
+            exit $E_STATE
+        fi
 
         (( DEBUG || VERBOSE )) && printf "\tSuccessfully validated state (after)\n"
 
