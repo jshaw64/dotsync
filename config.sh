@@ -6,161 +6,181 @@ CONF_KEY_FDST="dstfile"
 CONF_KEY_DROOT="dirroot"
 CONF_KEY_DGROUP="dirgroup"
 
-CONFIG=(
+conf_active=(
   "${CONF_KEY_FSRC}${CONF_FS}"
   "${CONF_KEY_FDST}${CONF_FS}"
   "${CONF_KEY_DROOT}${CONF_FS}"
   "${CONF_KEY_DGROUP}${CONF_FS}"
 )
 
-CONFIG_VALS=(
-  "${HOME}/.tstfile1"${CONF_FS}".tstfile-renamed"${CONF_FS}"${HOME}/dotfiles"${CONF_FS}"testdir"${CONF_FS}
+conf_global=(
 )
 
-TEST_CONFIG_VALS=(
-  "${HOME}/Documents/test-data/src/.test1-basic"${CONF_FS}".tst01-renamed"${CONF_FS}"${HOME}/Documents/test-data/dst"${CONF_FS}"test01-basic"${CONF_FS}
-  "${HOME}/Documents/test-data/src/.test2 with spaces in file"${CONF_FS}".tst02-renamed"${CONF_FS}"${HOME}/Documents/test-data/dst"${CONF_FS}"test02 with spaces"${CONF_FS}
-  "${HOME}/Documents/test-data/src/with spaces in dir/.test3"${CONF_FS}".tst03-renamed"${CONF_FS}"${HOME}/Documents/test-data/dst/with spaces in dir"${CONF_FS}"test03"${CONF_FS}
+conf_static=(
+    "${HOME}/Documents/test-data/src/.test1-basic"${CONF_FS}".tst01-renamed"${CONF_FS}"${HOME}/Documents/test-data/dst"${CONF_FS}"test01-basic"${CONF_FS}
 )
 
-test_basic()
+config_print_active()
 {
-	config_print
-	config_set $CONF_KEY_FSRC "test value 1"
-	config_print
-	config_set $CONF_KEY_FDST "test value 2"
-	config_print
-	config_set $CONF_KEY_DROOT "test value 3"
-	config_print
-	config_set $CONF_KEY_DGROUP "test value 4"
-	config_print
+    echo "Config: Print: Active"
+
+    local i=0
+    for entry in "${conf_active[@]}" ; do
+        local key=${entry%%:*}
+        local value=${entry#*:}
+        printf "\t[$i] Key: [$key] Value: [$value]\n"
+        (( i++ ))
+    done
 }
 
-config_test_conf_vals()
+config_print_global()
 {
-	config_print
-	local i=0
-	local size="${#CONFIG_VALS[@]}"
-	while [ $i -lt $size ]; do
-		config_parse $i
-		config_print
-		(( i++ ))
-	done
+    echo "Config: Print: Global"
+
+    local i=0
+    for entry in "${conf_global[@]}" ; do
+        local key=${entry%%:*}
+        local value=${entry#*:}
+        printf "\t[$i] Key: [$key] Value: [$value]\n"
+        (( i++ ))
+    done
 }
 
-config_test_parse()
+config_print_static()
 {
-	local idx=$1
-	local entry="${TEST_CONFIG_VALS[$idx]}"
-	local parsed=()
+    echo "Config: Print: Static"
 
-	OIFS="$IFS"
-	IFS=:
-	local i=0
-	for val in $entry; do
-		local key=
-		case $i in
-			0 )
-				key="$CONF_KEY_FSRC"
-				;;
-			1 ) 
-				key="$CONF_KEY_FDST"
-				;;
-			2 ) 
-				key="$CONF_KEY_DROOT"
-				;;
-			3 )
-				key="$CONF_KEY_DGROUP"
-				;;
-		esac
-		config_set "$key" $val
-		(( i++ ))
-	done
-	IFS="$OIFS"
+    local i=0
+    local size="${#conf_static[@]}"
+    local entry=
+    local idx=
+
+    while [ $i -lt $size ]; do
+        entry="${conf_static[$i]}"
+        OIFS="$IFS"
+        IFS=:
+        local j=0
+        for val in $entry; do
+            local key=
+            case $j in
+                0 )
+                    key="$CONF_KEY_FSRC"
+                    ;;
+                1 )
+                    key="$CONF_KEY_FDST"
+                    ;;
+                2 )
+                    key="$CONF_KEY_DROOT"
+                    ;;
+                3 )
+                    key="$CONF_KEY_DGROUP"
+                    ;;
+            esac
+            printf "\tKey: [${key}] Value: [${val}]\n"
+            (( j++ ))
+        done
+        IFS="$OIFS"
+        (( i++ ))
+    done
 }
 
 config_print()
 {
-	local i=0
-	for entry in "${CONFIG[@]}" ; do
-		local key=${entry%%:*}
-		local value=${entry#*:}
-		echo "[$i] Key: [$key] Value: [$value]"
-		(( i++ ))
-	done
+    config_print_active
+    config_print_global
+    config_print_static
 }
 
-config_parse()
+config_get_active()
 {
-	local idx=$1
-	local entry="${CONFIG_VALS[$idx]}"
-	local parsed=()
 
-	OIFS="$IFS"
-	IFS=:
-	local i=0
-	for val in $entry; do
-		local key=
-		case $i in
-			0 )
-				key="$CONF_KEY_FSRC"
-				;;
-			1 ) 
-				key="$CONF_KEY_FDST"
-				;;
-			2 ) 
-				key="$CONF_KEY_DROOT"
-				;;
-			3 )
-				key="$CONF_KEY_DGROUP"
-				;;
-		esac
-		config_set "$key" $val
-		(( i++ ))
-	done
-	IFS="$OIFS"
+    local get_key="$1"
+    local found=
+
+    for entry in "${conf_active[@]}" ; do
+        local key=${entry%%:*}
+        local value=${entry#*:}
+        if [ $key = $get_key ]; then
+            found="$value"
+            break
+        fi
+    done
+
+    echo "$found"
+}
+
+config_get_global()
+{
+    local get_key="$1"
+    local found=
+
+    for entry in "${conf_global[@]}" ; do
+        local key=${entry%%:*}
+        local value=${entry#*:}
+        if [ $key = $get_key ]; then
+            found="$value"
+            break
+        fi
+    done
+
+    echo "$found"
 }
 
 config_get()
 {
-	local get_key="$1"
-	local found=
 
-	for entry in "${CONFIG[@]}" ; do
-		local key=${entry%%:*}
-		local value=${entry#*:}
-		if [ $key = $get_key ]; then
-			found="$value"
-			break
-		fi
-	done
-
-	echo "$found"
+    local found="$(config_get_active "$@")"
+    if [ -z "$found" ]; then
+        found="$(config_get_global "$@")"
+    fi
+    echo "$found"
 }
 
 config_set()
 {
-	local set_key="$1"
-	local set_val="$2"
+    local set_key="$1"
+    local set_val="$2"
 
-	local i=0
-	for entry in "${CONFIG[@]}" ; do
-		local key=${entry%%:*}
-		local value=${entry#*:}
-		if [ "$key" = "$set_key" ]; then
-			CONFIG[$i]="${key}:${set_val}"
-			break
-		fi
-		(( i++ ))
-	done
+    local i=0
+    for entry in "${conf_active[@]}" ; do
+        local key=${entry%%:*}
+        local value=${entry#*:}
+        if [ "$key" = "$set_key" ]; then
+            conf_active[$i]="${key}:${set_val}"
+            break
+        fi
+        (( i++ ))
+    done
 
-	#CONFIG+=( "${key}:${set_val}" )
+    #CONFIG+=( "${key}:${set_val}" )
 }
 
-
-init()
+config_parse()
 {
-	[ "$1" = "test" ] && test_basic && config_test_conf_vals
-}
+    local idx=$1
+    local entry="${conf_static[$idx]}"
 
-init "$@"
+    OIFS="$IFS"
+    IFS=:
+    local i=0
+    for val in $entry; do
+        local key=
+        case $i in
+            0 )
+                key="$CONF_KEY_FSRC"
+                ;;
+            1 ) 
+                key="$CONF_KEY_FDST"
+                ;;
+            2 ) 
+                key="$CONF_KEY_DROOT"
+                ;;
+            3 ) 
+                key="$CONF_KEY_DGROUP"
+                ;;
+        esac
+        config_set "$key" $val
+        (( i++ ))
+    done
+    IFS="$OIFS"
+}
