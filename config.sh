@@ -13,11 +13,11 @@ CONF_KEY_DGROUP="dirgroup"
 conf_active=(
   "${CONF_KEY_FSRC}${CONF_FS}"
   "${CONF_KEY_FDST}${CONF_FS}"
-  "${CONF_KEY_DROOT}${CONF_FS}"
   "${CONF_KEY_DGROUP}${CONF_FS}"
 )
 
 conf_global=(
+  "${CONF_KEY_DROOT}${CONF_FS}${HOME}/Documents/test-data/dst"
   "${CONF_KEY_DEBUG}${CONF_FS}"1
   "${CONF_KEY_VERBOSE}${CONF_FS}"1
   "${CONF_KEY_DELETE}${CONF_FS}"1
@@ -25,7 +25,9 @@ conf_global=(
 )
 
 conf_static=(
-    "${HOME}/Documents/test-data/src/.test1-basic"${CONF_FS}".tst01-renamed"${CONF_FS}"${HOME}/Documents/test-data/dst"${CONF_FS}"test01-basic"${CONF_FS}
+  "${HOME}/Documents/test-data/src/.test1-basic"${CONF_FS}".tst01-renamed"${CONF_FS}"test01-basic"${CONF_FS}
+  "${HOME}/Documents/test-data/src/.test2 with spaces in file"${CONF_FS}".tst02-renamed"${CONF_FS}"test02 with spaces"${CONF_FS}
+  "${HOME}/Documents/test-data/src/with spaces in dir/.test3"${CONF_FS}".tst03-renamed"${CONF_FS}"test03"${CONF_FS}
 )
 
 config_print_active()
@@ -78,9 +80,6 @@ config_print_static()
                     key="$CONF_KEY_FDST"
                     ;;
                 2 )
-                    key="$CONF_KEY_DROOT"
-                    ;;
-                3 )
                     key="$CONF_KEY_DGROUP"
                     ;;
             esac
@@ -181,9 +180,6 @@ config_parse()
                 key="$CONF_KEY_FDST"
                 ;;
             2 ) 
-                key="$CONF_KEY_DROOT"
-                ;;
-            3 ) 
                 key="$CONF_KEY_DGROUP"
                 ;;
         esac
