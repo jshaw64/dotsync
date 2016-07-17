@@ -50,9 +50,12 @@ validate_after()
     elif [ ! "$linktarget" = "$filedst" ]; then
         echo "Error: src symlink target [$linktarget] does not point to filedst [$filedst]"
         exit $E_FSRC
+    elif [ ! -d "$archivedir" ]; then
+        echo "Error: archive dir [$archivedir] not found"
+        exit $E_ARCH
     elif [ ! -e "$farchive" ]; then
         echo "Error: archive file [$farchive] not found"
-        exit $E_FDST
+        exit $E_ARCH
     fi
 }
 
