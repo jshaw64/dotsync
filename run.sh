@@ -54,7 +54,7 @@ main()
             do_copy "$fsrc" "$fdst" "$droot" "$dgroup"
         fi
 
-        local should_archive=$(config_get "$CONF_KEY_ARCH")
+        local should_archive=$(config_get "$CONF_KEY_LINK")
         if [ $should_archive -eq 1 ]; then
             (( DEBUG || VERBOSE )) && echo "Moving file to archive..."
             (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
