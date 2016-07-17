@@ -1,5 +1,8 @@
 #!/bin/bash
 
+DEBUG=1
+VERBOSE=1
+
 CONF_FS=":"
 CONF_KEY_FSRC="srcfile"
 CONF_KEY_FDST="dstfile"
