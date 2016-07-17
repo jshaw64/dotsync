@@ -59,7 +59,16 @@ main()
             do_archive "$fsrc" "$darch"
         fi
 
-        do_link "$fsrc" "$fdst" "$droot" "$dgroup"
+        local should_link=$(config_get "$CONF_KEY_LINK")
+        if [ $should_link -eq 1 ]; then
+            (( DEBUG || VERBOSE )) && echo "Creating symlink..."
+            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
+            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
+            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
+            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
+
+            do_link "$fsrc" "$fdst" "$droot" "$dgroup"
+        fi
 
         (( DEBUG || VERBOSE )) && echo "Validating state (after)..."
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
