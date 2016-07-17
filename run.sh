@@ -6,6 +6,9 @@ main()
 {
     local darchive="${HOME}/dotarchive"
 
+    DEBUG=$(config_get "$CONF_KEY_DEBUG")
+    VERBOSE=$(config_get "$CONF_KEY_VERBOSE")
+
     local i=0
     local size="${#conf_static[@]}"
     while [ $i -lt $size ]; do

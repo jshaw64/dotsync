@@ -1,9 +1,10 @@
 #!/bin/bash
 
-DEBUG=1
-VERBOSE=1
-
 CONF_FS=":"
+CONF_KEY_DEBUG="debug"
+CONF_KEY_VERBOSE="verbose"
+CONF_KEY_DELETE="destructive"
+CONF_KEY_LINK="symlink"
 CONF_KEY_FSRC="srcfile"
 CONF_KEY_FDST="dstfile"
 CONF_KEY_DROOT="dirroot"
@@ -17,6 +18,10 @@ conf_active=(
 )
 
 conf_global=(
+  "${CONF_KEY_DEBUG}${CONF_FS}"1
+  "${CONF_KEY_VERBOSE}${CONF_FS}"1
+  "${CONF_KEY_DELETE}${CONF_FS}"1
+  "${CONF_KEY_LINK}${CONF_FS}"1
 )
 
 conf_static=(
