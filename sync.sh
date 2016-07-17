@@ -56,8 +56,7 @@ validate_after()
     local dgroup="$4"
     local archivedir="$5"
     local should_copy=$6
-    local should_archive=$7
-    local should_link=$8
+    local should_link=$7
 
     local dirdst="${droot}/${dgroup}"
     local filedst="${dirdst}/${fdst}"
@@ -71,16 +70,6 @@ validate_after()
         fi
     fi
 
-    if [ $should_archive -eq 1 ]; then
-        if [ ! -d "$archivedir" ]; then
-            echo "Error: archive dir [$archivedir] not found"
-            exit $E_ARCH
-        elif [ ! -e "$farchive" ]; then
-            echo "Error: archive file [$farchive] not found"
-            exit $E_ARCH
-        fi
-    fi
-
     if [ $should_link -eq 1 ]; then
         if [ ! -L "$fsrc" ]; then
             echo "Error: src symlink [$fsrc] not found"
@@ -88,6 +77,13 @@ validate_after()
         elif [ ! "$linktarget" = "$filedst" ]; then
             echo "Error: src symlink target [$linktarget] does not point to filedst [$filedst]"
             exit $E_FSRC
+        fi
+        if [ ! -d "$archivedir" ]; then
+            echo "Error: archive dir [$archivedir] not found"
+            exit $E_ARCH
+        elif [ ! -e "$farchive" ]; then
+            echo "Error: archive file [$farchive] not found"
+            exit $E_ARCH
         fi
     fi
 }

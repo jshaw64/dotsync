@@ -81,10 +81,9 @@ main()
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DARCH}], Value [${darch}]\n"
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_COPY}], Value [${should_copy}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_ARCH}], Value [${should_archive}]\n"
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_LINK}], Value [${should_link}]\n"
 
-        validate_after "$fsrc" "$fdst" "$droot" "$dgroup" "$darch" "$should_copy" "$should_archive" "$should_link"
+        validate_after "$fsrc" "$fdst" "$droot" "$dgroup" "$darch" "$should_copy" "$should_link"
         if [ $? -gt 0 ]; then
             echo "Error: unable to validate state (after)"
             exit $E_STATE
