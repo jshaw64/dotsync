@@ -43,11 +43,6 @@ validate_after()
     local linktarget="$(readlink "$fsrc")"
     local farchive="${archivedir}/${fsrc##*/}"
 
-    echo "$fsrc"
-    echo "$dirdst"
-    echo "$filedst"
-    echo "$linktarget"
-
     if [ ! -L "$fsrc" ]; then
         echo "Error: src symlink [$fsrc] not found"
         exit $E_FSRC
