@@ -50,11 +50,14 @@ main()
 
         do_archive "$fsrc" "$darch"
 
-        (( DEBUG || VERBOSE )) && echo "Creating symlink..."
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
+        local should_archive=$(config_get "$CONF_KEY_ARCH")
+        if [ $should_archive -eq 1 ]; then
+            (( DEBUG || VERBOSE )) && echo "Moving file to archive..."
+            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
+            (( DEBUG || VERBOSE )) && printf "\tKey [darch], Value [${darch}]\n"
+
+            do_archive "$fsrc" "$darch"
+        fi
 
         do_link "$fsrc" "$fdst" "$droot" "$dgroup"
 
