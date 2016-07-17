@@ -4,7 +4,6 @@ E_STATE=70
 
 main()
 {
-
     DEBUG=$(config_get "$CONF_KEY_DEBUG")
     VERBOSE=$(config_get "$CONF_KEY_VERBOSE")
 
@@ -80,9 +79,12 @@ main()
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
         (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [darch], Value [${darch}]\n"
+        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DARCH}], Value [${darch}]\n"
+        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_COPY}], Value [${should_copy}]\n"
+        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_ARCH}], Value [${should_archive}]\n"
+        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_LINK}], Value [${should_link}]\n"
 
-        validate_after "$fsrc" "$fdst" "$droot" "$dgroup" "$darch"
+        validate_after "$fsrc" "$fdst" "$droot" "$dgroup" "$darch" "$should_copy" "$should_archive" "$should_link"
         if [ $? -gt 0 ]; then
             echo "Error: unable to validate state (after)"
             exit $E_STATE

@@ -55,24 +55,40 @@ validate_after()
     local droot="$3"
     local dgroup="$4"
     local archivedir="$5"
+    local should_copy=$6
+    local should_archive=$7
+    local should_link=$8
 
     local dirdst="${droot}/${dgroup}"
     local filedst="${dirdst}/${fdst}"
     local linktarget="$(readlink "$fsrc")"
     local farchive="${archivedir}/${fsrc##*/}"
 
-    if [ ! -L "$fsrc" ]; then
-        echo "Error: src symlink [$fsrc] not found"
-        exit $E_FSRC
-    elif [ ! "$linktarget" = "$filedst" ]; then
-        echo "Error: src symlink target [$linktarget] does not point to filedst [$filedst]"
-        exit $E_FSRC
-    elif [ ! -d "$archivedir" ]; then
-        echo "Error: archive dir [$archivedir] not found"
-        exit $E_ARCH
-    elif [ ! -e "$farchive" ]; then
-        echo "Error: archive file [$farchive] not found"
-        exit $E_ARCH
+    if [ $should_copy -eq 1 ]; then
+        if [ ! -e "$filedst" ]; then
+            echo "Error: dest file [$filedst] not found"
+            exit $E_FSRC
+        fi
+    fi
+
+    if [ $should_archive -eq 1 ]; then
+        if [ ! -d "$archivedir" ]; then
+            echo "Error: archive dir [$archivedir] not found"
+            exit $E_ARCH
+        elif [ ! -e "$farchive" ]; then
+            echo "Error: archive file [$farchive] not found"
+            exit $E_ARCH
+        fi
+    fi
+
+    if [ $should_link -eq 1 ]; then
+        if [ ! -L "$fsrc" ]; then
+            echo "Error: src symlink [$fsrc] not found"
+            exit $E_FSRC
+        elif [ ! "$linktarget" = "$filedst" ]; then
+            echo "Error: src symlink target [$linktarget] does not point to filedst [$filedst]"
+            exit $E_FSRC
+        fi
     fi
 }
 
