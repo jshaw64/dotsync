@@ -116,7 +116,7 @@ main()
 	local darchive="${HOME}/dotarchive"
 
 	local i=0
-	local size="${#CONFIG_VALS[@]}"
+	local size="${#conf_static[@]}"
 	while [ $i -lt $size ]; do
 		config_parse $i
 		local fsrc=$(config_get "$CONF_KEY_FSRC")
