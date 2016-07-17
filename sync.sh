@@ -5,6 +5,23 @@ E_DROOT=51
 E_FDST=52
 E_ARCH=53
 
+do_copy()
+{
+    local fsrc="$1"
+    local fdst="$2"
+    local droot="$3"
+    local dgroup="$4"
+
+    local dirdst="${droot}/${dgroup}"
+    local filedst="${dirdst}/${fdst}"
+
+    if [ ! -d "$dirdst" ]; then
+        mkdir "$dirdst"
+    fi
+
+    cp "$fsrc" "$filedst"
+}
+
 do_archive()
 {
     local fsrc="$1"

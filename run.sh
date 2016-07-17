@@ -44,11 +44,16 @@ main()
         
         (( DEBUG || VERBOSE )) && printf "\tSuccessfully validated state (before)\n"
 
-        (( DEBUG || VERBOSE )) && echo "Copying file to archive..."
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [darch], Value [${darch}]\n"
+        local should_copy=$(config_get "$CONF_KEY_COPY")
+        if [ $should_copy -eq 1 ]; then
+            (( DEBUG || VERBOSE )) && echo "Copying src file to dst/group..."
+            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
+            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
+            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
+            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
 
-        do_archive "$fsrc" "$darch"
+            do_copy "$fsrc" "$fdst" "$droot" "$dgroup"
+        fi
 
         local should_archive=$(config_get "$CONF_KEY_ARCH")
         if [ $should_archive -eq 1 ]; then
