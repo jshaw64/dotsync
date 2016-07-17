@@ -1,20 +1,5 @@
 #!/bin/bash
 
-CONF_FS=":"
-
-CONF_KEY_1="globalkey1"
-CONF_KEY_2="activekey1"
-CONF_KEY_3="activekey2"
-
-conf_active=(
-  "${CONF_KEY_2}${CONF_FS}"
-  "${CONF_KEY_3}${CONF_FS}"
-)
-
-conf_global=(
-)
-
-
 test_set()
 {
     echo "---------------"
