@@ -2,16 +2,12 @@
 
 test_sync()
 {
-    . ./config.sh
-
-    echo "Hello-----"
-
-    local darchive="${HOME}/Documents/test-data/dotarchive"
+    local darchive="${HOME}/dotarchive"
 
     local i=0
-    local size="${#TEST_CONFIG_VALS[@]}"
+    local size="${#conf_static[@]}"
     while [ $i -lt $size ]; do
-        config_test_parse $i
+        config_parse $i
         local fsrc=$(config_get "$CONF_KEY_FSRC")
         local fdst=$(config_get "$CONF_KEY_FDST")
         local droot=$(config_get "$CONF_KEY_DROOT")
@@ -23,18 +19,14 @@ test_sync()
         validate_after "$fsrc" "$fdst" "$droot" "$dgroup" "$darchive"
         (( i++ ))
     done
-    echo "Hello-----"
-}
-
-main()
-{
-    test_sync
 }
 
 init()
 {
+    local ctx="${BASH_SOURCE%/*}"
+    . "../config.sh"
     . "../sync.sh"
 }
 
 init
-main
+test_sync "$@"
