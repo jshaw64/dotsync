@@ -106,6 +106,11 @@ config_print()
     config_print_static
 }
 
+config_validate_key()
+{
+    return 0
+}
+
 config_get_active()
 {
 
