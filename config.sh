@@ -35,6 +35,8 @@ conf_active=(
 conf_global=()
 conf_static=()
 
+E_KEY=80
+
 config_print_active()
 {
     echo "Config: Print: Active"
