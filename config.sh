@@ -211,7 +211,22 @@ config_set_db()
     conf_static=( "${conf_static[@]}" "$set_key" )
 }
 
-    #CONFIG+=( "${key}:${set_val}" )
+config_set()
+{
+    local set_type="$1"
+    local set_key="$2"
+    local set_val="$3"
+
+    local conf_list=
+    if [ -z "$set_type" ]; then
+        config_set_cache "$set_key" "$set_val"
+    elif [ "$set_type" = "parm" ]; then
+        config_set_parm "$set_key" "$set_val"
+    elif [ "$set_type" = "static" ]; then
+        config_set_db "$set_val"
+    fi
+}
+
 }
 
 config_parse()
