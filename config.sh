@@ -204,6 +204,12 @@ config_set_parm()
     fi
 }
 
+config_set_db()
+{
+    local set_key="$1"
+
+    conf_static=( "${conf_static[@]}" "$set_key" )
+}
 
     #CONFIG+=( "${key}:${set_val}" )
 }
