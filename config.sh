@@ -156,7 +156,7 @@ config_get()
     echo "$found"
 }
 
-config_set()
+config_set_cache()
 {
     local set_key="$1"
     local set_val="$2"
@@ -171,6 +171,8 @@ config_set()
         fi
         (( i++ ))
     done
+}
+
 config_set_parm()
 {
     local set_key="$1"
