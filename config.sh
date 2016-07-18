@@ -166,6 +166,37 @@ config_set()
         fi
         (( i++ ))
     done
+config_set_parm()
+{
+    local set_key="$1"
+    local set_val="$2"
+
+    echo "set key is....... $set_key"
+    echo "set val is....... $set_val"
+
+    local i=0
+    local found=0
+    for entry in "${conf_global[@]}" ; do
+        local key=${entry%%=*}
+        local value=${entry#*=}
+        if [ "$key" = "$set_key" ]; then
+            conf_global[$i]="${key}${CONF_FS}${set_val}"
+            found=1
+            break
+        fi
+        (( i++ ))
+    done
+
+    if [ $found -eq 0 ]; then
+        local valid_key=$(config_validate_key "$set_key")
+        if [ $valid_key -gt 0 ]; then
+            echo "Error: invalid key [${set_key}]"
+            exit $E_KEY
+        fi
+        conf_global=( "${conf_global[@]}" "${set_key}${CONF_FS}${set_val}" )
+    fi
+}
+
 
     #CONFIG+=( "${key}:${set_val}" )
 }
