@@ -1,15 +1,20 @@
 #!/bin/bash
 
 CONF_FS=":"
+#
 CONF_KEY_DEBUG="debug"
 CONF_KEY_VERBOSE="verbose"
 CONF_KEY_COPY="copymode"
 CONF_KEY_LINK="linkmode"
+#
 CONF_KEY_FSRC="srcfile"
 CONF_KEY_FDST="dstfile"
 CONF_KEY_DROOT="dirroot"
 CONF_KEY_DGROUP="dirgroup"
 CONF_KEY_DARCH="dirarchive"
+#
+CONF_KEY_SCOPY="sync_copy"
+CONF_KEY_SLINK="sync_link"
 
 conf_active=(
   "${CONF_KEY_FSRC}${CONF_FS}"
