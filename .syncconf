@@ -1,0 +1,25 @@
+debug=1
+verbose=1
+copymode=1
+linkmode=1
+dirarchive=/Documents/test-data/arch
+
+sync_copy
+  group1
+    srcfile=/Documents/test-data/src/.test1-basic
+    dstfile=.tst01-renamed
+    dirroot=/Documents/test-data/dst
+    dirgroup=test01-basic
+  group2
+    srcfile=/Documents/test-data/src/.test2 with spaces in file
+    dstfile=.tst02-renamed
+    dirroot=/Documents/test-data/dst
+    dirgroup=test02 with spaces
+  group3
+    srcfile=/Documents/test-data/src/with spaces in dir/.test3
+    dstfile=.tst03-renamed
+    dirroot=/Documents/test-data/dst
+    dirgroup=test03
+
+sync_link
+
