@@ -259,6 +259,52 @@ config_parse_file_parms()
         esac
     done < $fconf
 }
+
+config_parse_file_db()
+{
+    local fconf="./.syncconf"
+    local final_entry=
+
+    local idx=0
+    while read -r line; do
+        local key=${line%=*}
+        local val=${line#*=}
+
+        if [ "$key" = "$CONF_KEY_SGROUP" ]; then
+            (( idx++ ))
+            continue
+        elif [ $idx -eq 0 ]; then
+            continue
+        fi
+
+        case $idx in
+            1 )
+                final_entry+="${val}${CONF_FS}"
+                (( idx++ ))
+                ;;
+            2 )
+                final_entry+="${val}${CONF_FS}"
+                (( idx++ ))
+                ;;
+            3 )
+                final_entry+="${val}${CONF_FS}"
+                (( idx++ ))
+                ;;
+            4 )
+                final_entry+="${val}"
+                idx=0
+                config_set "static" "" "$final_entry"
+                final_entry=
+                ;;
+        esac
+    done < $fconf
+}
+
+config_parse_file()
+{
+    config_parse_file_parms
+    config_parse_file_db
+    config_print
 }
 
 config_parse()
@@ -290,3 +336,6 @@ config_parse()
     done
     IFS="$OIFS"
 }
+
+
+config_parse_file
