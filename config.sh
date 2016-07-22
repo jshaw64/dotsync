@@ -185,9 +185,6 @@ config_set_parm()
     local set_key="$1"
     local set_val="$2"
 
-    echo "set key is....... $set_key"
-    echo "set val is....... $set_val"
-
     local i=0
     local found=0
     for entry in "${conf_global[@]}" ; do
@@ -202,8 +199,9 @@ config_set_parm()
     done
 
     if [ $found -eq 0 ]; then
-        local valid_key=$(config_validate_key "$set_key")
-        if [ $valid_key -gt 0 ]; then
+        config_validate_key "$set_key"
+        local is_valid_key=$?
+        if [ $is_valid_key -gt 0 ]; then
             echo "Error: invalid key [${set_key}]"
             exit $E_KEY
         fi
