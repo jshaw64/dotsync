@@ -15,6 +15,7 @@ CONF_KEY_DARCH="dirarchive"
 #
 CONF_KEY_SCOPY="sync_copy"
 CONF_KEY_SLINK="sync_link"
+CONF_KEY_SGROUP="sync_group"
 
 conf_active=(
   "${CONF_KEY_FSRC}${CONF_FS}"
