@@ -99,7 +99,6 @@ init()
 {
     local ctx="${BASH_SOURCE%/*}"
     if [[ ! -d "$ctx" ]]; then ctx="$PWD"; fi
-    . "$ctx/config.sh"
     . "$ctx/sync.sh"
 }
 
