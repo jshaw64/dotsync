@@ -100,6 +100,9 @@ init()
     local ctx="${BASH_SOURCE%/*}"
     if [[ ! -d "$ctx" ]]; then ctx="$PWD"; fi
     . "$ctx/sync.sh"
+    . "$ctx/lib/fsutils/fsutils.sh"
+    . "$ctx/lib/config/config.sh"
+
 }
 
 init
