@@ -47,13 +47,11 @@ task_archive_src()
 
 task_link_to_dst()
 {
-  local fsrc="$1"
-  local fdst="$2"
-  local droot="$3"
-  local dgroup="$4"
-
-  local dirdst="${droot}/${dgroup}"
-  local filedst="${dirdst}/${fdst}"
+  local dir_dst="$1"
+  local dir_src="$2"
+  local file_src_name="$3"
+  local file_dst_name="$4"
+  local file_dst_path="${dir_dst}/${file_dst_name}"
 
   if [ ! -d "$dirdst" ]; then
       mkdir "$dirdst"
