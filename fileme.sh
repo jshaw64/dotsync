@@ -202,34 +202,8 @@ fileme_prepare_config()
 }
 
 
-
-main()
+run_tasks()
 {
-  local ctx="${BASH_SOURCE%/*}"
-  if [[ ! -d "$ctx" ]]; then ctx="$PWD"; fi
-  . "$ctx/lib/fsutils/fsutils.sh"
-  . "$ctx/lib/config/config.sh"
-
-  parse_parms "$@"
-
-  local config_file=$(config_get "$KEY_CONFIG_FILE")
-  fs_is_valid_file "$config_file"
-  if [ $? -gt 0 ]; then
-  else
-    while :; do
-      local group_begin=$(config_get "$KEY_GROUP_BEGIN")
-      local group_end=$(config_get "$KEY_GROUP_END")
-      config_parse_file "$KEY_GROUP_BEGIN" "$KEY_GROUP_END" ".syncconf"
-      local config_values=$(config_get 1)
-      [ -z "$config_values" ] && break
-      fileme_prepare_config "$config_values"
-    done
-  fi
-
-
-
-
-
   local group_name=$(config_get "$KEY_GROUP")
   local mode_copy=$(config_get "$KEY_MODE_COPY")
   local mode_link=$(config_get "$KEY_MODE_LINK")
@@ -250,6 +224,33 @@ main()
 
   local archive_dir=$(config_get "$KEY_ARCHIVE_DIR")
   task_archive_src "$file_src_dir" "$archive_dir" "$file_src_name"
+}
+
+main()
+{
+  local ctx="${BASH_SOURCE%/*}"
+  if [[ ! -d "$ctx" ]]; then ctx="$PWD"; fi
+  . "$ctx/lib/fsutils/fsutils.sh"
+  . "$ctx/lib/config/config.sh"
+
+  parse_parms "$@"
+
+  local config_file=$(config_get "$KEY_CONFIG_FILE")
+  fs_is_valid_file "$config_file"
+
+  if [ $? -gt 0 ]; then
+    run_tasks
+  else
+    while :; do
+      local group_begin=$(config_get "$KEY_GROUP_BEGIN")
+      local group_end=$(config_get "$KEY_GROUP_END")
+      config_parse_file "$KEY_GROUP_BEGIN" "$KEY_GROUP_END" ".syncconf"
+      local config_values=$(config_get 1)
+      [ -z "$config_values" ] && break
+      fileme_prepare_config "$config_values"
+      run_tasks
+    done
+  fi
 }
 
 main "$@"
