@@ -12,19 +12,18 @@ E_STATE=70
 KEY_GROUP="group"
 KEY_DIR_SRC="dir_src"
 KEY_DIR_DST="dir_dst"
-KEY_FILE_SRC="file_src"
-KEY_FILE_DST="file_dst"
+KEY_FILE_SRC_PATH="file_src"
+KEY_FILE_DST_PATH="file_dst"
 
 E_DIR=90
 E_TASK_COPY=91
 
 task_copy_to_dst()
 {
-  local file_src="$1"
-  local file_dst="$2"
-  local dir_src="$3"
-  local dir_dst="$4"
-  local file_dst_path="${dir_dst}/${file_dst}"
+  local dir_src="$1"
+  local dir_dst="$2"
+  local file_src="$3"
+  local file_dst="$4"
 
   fs_is_valid_dir "$dir_src"
   (( $? > 0 )) && exit $E_DIR
