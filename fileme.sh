@@ -9,6 +9,12 @@ E_FDST=52
 E_ARCH=53
 E_STATE=70
 
+KEY_GROUP="group"
+KEY_DIR_SRC="dir_src"
+KEY_DIR_DST="dir_dst"
+KEY_FILE_SRC="file_src"
+KEY_FILE_DST="file_dst"
+
 do_copy()
 {
     local fsrc="$1"
