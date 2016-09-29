@@ -129,10 +129,8 @@ fileme_prepare_config()
 {
   local config_values="$1"
   local group_name=
-  local dir_src=
-  local dir_dst=
-  local file_src=
-  local file_dst=
+  local file_src_path=
+  local file_dst_path=
 
   local OIFS="$IFS"
   IFS=:
@@ -144,16 +142,10 @@ fileme_prepare_config()
         group_name="$val"
         ;;
       1 )
-        dir_src="$val"
+        file_src_path="$val"
         ;;
       2 )
-        dir_dst="$val"
-        ;;
-      3 )
-        file_src="$val"
-        ;;
-      4 )
-        file_dst="$val"
+        file_dst_path="$val"
         ;;
     esac
     (( i++ ))
@@ -162,10 +154,8 @@ fileme_prepare_config()
   IFS="$OIFS"
 
   config_set "$KEY_GROUP" "$group_name"
-  config_set "$KEY_DIR_SRC" "$dir_src"
-  config_set "$KEY_DIR_DST" "$dir_dst"
-  config_set "$KEY_FILE_SRC" "$file_src"
-  config_set "$KEY_FILE_DST" "$file_dst"
+  config_set "$KEY_FILE_SRC_PATH" "$file_src_path"
+  config_set "$KEY_FILE_DST_PATH" "$file_dst_path"
 }
 
 
