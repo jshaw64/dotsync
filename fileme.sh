@@ -20,23 +20,23 @@ E_TASK_COPY=91
 
 task_copy_to_dst()
 {
-   local file_src="$1"
-   local file_dst="$2"
-   local dir_src="$3"
-   local dir_dst="$4"
-   local file_dst_path="${dir_dst}/${file_dst}"
+  local file_src="$1"
+  local file_dst="$2"
+  local dir_src="$3"
+  local dir_dst="$4"
+  local file_dst_path="${dir_dst}/${file_dst}"
 
-   fs_is_valid_dir "$dir_src"
-   (( $? > 0 )) && exit $E_DIR
+  fs_is_valid_dir "$dir_src"
+  (( $? > 0 )) && exit $E_DIR
 
-   fs_is_valid_dir "$dir_dst"
-   (( $? > 0 )) && mkdir "$dir_dst"
+  fs_is_valid_dir "$dir_dst"
+  (( $? > 0 )) && mkdir "$dir_dst"
 
-   fs_is_valid_dir "$dir_dst"
-   (( $? > 0 )) && exit $E_DIR
+  fs_is_valid_dir "$dir_dst"
+  (( $? > 0 )) && exit $E_DIR
 
-   fs_copy_file "$file_src" "$file_dst_path"
-   (( $? > 0 )) && exit $E_TASK_COPY
+  fs_copy_file "$file_src" "$file_dst_path"
+  (( $? > 0 )) && exit $E_TASK_COPY
 }
 
 do_archive()
