@@ -34,7 +34,7 @@ task_copy_to_dst()
   fs_is_valid_dir "$dir_dst"
   (( $? > 0 )) && exit $E_DIR
 
-  fs_copy_file "$file_src" "$file_dst_path"
+  fs_copy_file "$dir_src" "$dir_dst" "$file_src" "$file_dst"
   (( $? > 0 )) && exit $E_TASK_COPY
 }
 
