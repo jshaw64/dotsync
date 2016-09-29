@@ -45,6 +45,24 @@ task_archive_src()
   return 0
 }
 
+task_link_to_dst()
+{
+  local fsrc="$1"
+  local fdst="$2"
+  local droot="$3"
+  local dgroup="$4"
+
+  local dirdst="${droot}/${dgroup}"
+  local filedst="${dirdst}/${fdst}"
+
+  if [ ! -d "$dirdst" ]; then
+      mkdir "$dirdst"
+  fi
+
+  cd "$dirdst"
+  ln -s "$filedst" "$fsrc"
+}
+
 task_copy_to_dst()
 {
   local dir_src="$1"
@@ -65,25 +83,6 @@ task_copy_to_dst()
   (( $? > 0 )) && exit $E_TASK_COPY
 
   return 0
-}
-
-
-do_link()
-{
-    local fsrc="$1"
-    local fdst="$2"
-    local droot="$3"
-    local dgroup="$4"
-
-    local dirdst="${droot}/${dgroup}"
-    local filedst="${dirdst}/${fdst}"
-
-    if [ ! -d "$dirdst" ]; then
-        mkdir "$dirdst"
-    fi
-
-    cd "$dirdst"
-    ln -s "$filedst" "$fsrc"
 }
 
 validate_after()
