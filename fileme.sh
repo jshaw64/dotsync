@@ -36,6 +36,8 @@ task_copy_to_dst()
 
   fs_copy_file "$dir_src" "$dir_dst" "$file_src" "$file_dst"
   (( $? > 0 )) && exit $E_TASK_COPY
+
+  return 0
 }
 
 do_archive()
