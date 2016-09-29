@@ -155,6 +155,9 @@ main()
     local file_dst_name=$(fs_parse_file_from_path "$file_dst_path")
     task_copy_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
 
+
+    task_link_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
+
     local archive_dir=$(config_get "$KEY_ARCHIVE_DIR")
 }
 
