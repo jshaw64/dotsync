@@ -135,31 +135,31 @@ fileme_prepare_config()
 
 main()
 {
-    local ctx="${BASH_SOURCE%/*}"
-    if [[ ! -d "$ctx" ]]; then ctx="$PWD"; fi
-    . "$ctx/lib/fsutils/fsutils.sh"
-    . "$ctx/lib/config/config.sh"
+  local ctx="${BASH_SOURCE%/*}"
+  if [[ ! -d "$ctx" ]]; then ctx="$PWD"; fi
+  . "$ctx/lib/fsutils/fsutils.sh"
+  . "$ctx/lib/config/config.sh"
 
-    config_parse_file "sync_group_begin" "sync_group_end" ".syncconf"
-    local config_values=$(config_get 1)
+  config_parse_file "sync_group_begin" "sync_group_end" ".syncconf"
+  local config_values=$(config_get 1)
 
-    fileme_prepare_config "$config_values"
+  fileme_prepare_config "$config_values"
 
-    local group_name=$(config_get "$KEY_GROUP")
+  local group_name=$(config_get "$KEY_GROUP")
 
-    local file_src_path=$(config_get "$KEY_FILE_SRC_PATH")
-    local file_src_dir=$(fs_parse_path_no_file "$file_src_path")
-    local file_src_name=$(fs_parse_file_from_path "$file_src_path")
-    local file_dst_path=$(config_get "$KEY_FILE_DST_PATH")
-    local file_dst_dir=$(fs_parse_path_no_file "$file_dst_path")
-    local file_dst_name=$(fs_parse_file_from_path "$file_dst_path")
-    task_copy_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
+  local file_src_path=$(config_get "$KEY_FILE_SRC_PATH")
+  local file_src_dir=$(fs_parse_path_no_file "$file_src_path")
+  local file_src_name=$(fs_parse_file_from_path "$file_src_path")
+  local file_dst_path=$(config_get "$KEY_FILE_DST_PATH")
+  local file_dst_dir=$(fs_parse_path_no_file "$file_dst_path")
+  local file_dst_name=$(fs_parse_file_from_path "$file_dst_path")
+  task_copy_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
 
 
-    task_link_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
+  task_link_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
 
-    local archive_dir=$(config_get "$KEY_ARCHIVE_DIR")
-    task_archive_src "$file_src_dir" "$archive_dir" "$file_src_name"
+  local archive_dir=$(config_get "$KEY_ARCHIVE_DIR")
+  task_archive_src "$file_src_dir" "$archive_dir" "$file_src_name"
 }
 
 main "$@"
