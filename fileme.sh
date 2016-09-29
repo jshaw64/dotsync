@@ -117,6 +117,51 @@ validate_before()
     return 0
 }
 
+fileme_prepare_config()
+{
+  local config_values="$1"
+  local group_name=
+  local dir_src=
+  local dir_dst=
+  local file_src=
+  local file_dst=
+
+  local OIFS="$IFS"
+  IFS=:
+  local i=0
+
+  for val in $config_values; do
+    case $i in
+      0 )
+        group_name="$val"
+        ;;
+      1 )
+        dir_src="$val"
+        ;;
+      2 )
+        dir_dst="$val"
+        ;;
+      3 )
+        file_src="$val"
+        ;;
+      4 )
+        file_dst="$val"
+        ;;
+    esac
+    (( i++ ))
+  done
+
+  IFS="$OIFS"
+
+  config_set "$KEY_GROUP" "$group_name"
+  config_set "$KEY_DIR_SRC" "$dir_src"
+  config_set "$KEY_DIR_DST" "$dir_dst"
+  config_set "$KEY_FILE_SRC" "$file_src"
+  config_set "$KEY_FILE_DST" "$file_dst"
+}
+
+
+
 main()
 {
     local ctx="${BASH_SOURCE%/*}"
