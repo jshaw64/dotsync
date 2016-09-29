@@ -50,6 +50,7 @@ task_link_to_dst()
   local dir_dst="$1"
   local dir_src="$2"
   local file_src_name="$3"
+  local file_src_path="${dir_src}/${file_src_name}"
   local file_dst_name="$4"
   local file_dst_path="${dir_dst}/${file_dst_name}"
 
@@ -62,8 +63,8 @@ task_link_to_dst()
   fs_is_valid_dir "$dir_dst"
   (( $? > 0 )) && exit $E_DIR
 
-  cd "$dirdst"
-  ln -s "$filedst" "$fsrc"
+  cd "$dir_dst"
+  ln -s "$file_dst_path" "$file_src_path"
 }
 
 task_copy_to_dst()
