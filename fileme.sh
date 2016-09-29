@@ -16,6 +16,7 @@ KEY_FILE_SRC="file_src"
 KEY_FILE_DST="file_dst"
 
 E_DIR=90
+E_TASK_COPY=91
 
 task_copy_to_dst()
 {
@@ -23,7 +24,7 @@ task_copy_to_dst()
    local file_dst="$2"
    local dir_src="$3"
    local dir_dst="$4"
-   local file_path="${dir_dst}/${file_dst}"
+   local file_dst_path="${dir_dst}/${file_dst}"
 
    fs_is_valid_dir "$dir_src"
    (( $? > 0 )) && exit $E_DIR
@@ -34,7 +35,8 @@ task_copy_to_dst()
    fs_is_valid_dir "$dir_dst"
    (( $? > 0 )) && exit $E_DIR
 
-   cp "$fsrc" "$filedst"
+   fs_copy_file "$file_src" "$file_dst_path"
+   (( $? > 0 )) && exit $E_TASK_COPY
 }
 
 do_archive()
