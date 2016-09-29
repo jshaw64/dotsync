@@ -241,14 +241,16 @@ main()
   if [ $? -gt 0 ]; then
     run_tasks
   else
+    local idx=1
     while :; do
       local group_begin=$(config_get "$KEY_GROUP_BEGIN")
       local group_end=$(config_get "$KEY_GROUP_END")
       config_parse_file "$group_begin" "$group_end" "$config_file"
-      local config_values=$(config_get 1)
+      local config_values=$(config_get $idx)
       [ -z "$config_values" ] && break
       fileme_prepare_config "$config_values"
       run_tasks
+      (( idx++ ))
     done
   fi
 }
