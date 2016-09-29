@@ -2,6 +2,7 @@ sync_group_begin
   sync_group=group1
   file_src_path=/Users/joelshaw/Documents/test-data/src/.test1-basic
   file_dst_path=/Users/joelshaw/Documents/test-data/dst/.tst01-renamed
+  archive_dir=/Users/joelshaw/Documents/test-data/arch
   mode_link=1
   mode_copy=2
 sync_group_end
