@@ -15,12 +15,12 @@ KEY_DIR_DST="dir_dst"
 KEY_FILE_SRC="file_src"
 KEY_FILE_DST="file_dst"
 
-do_copy()
+task_copy_to_dst()
 {
-    local fsrc="$1"
-    local fdst="$2"
-    local droot="$3"
-    local dgroup="$4"
+   local file_src="$1"
+   local file_dst="$2"
+   local dir_src="$3"
+   local dir_dst="$4"
 
     local dirdst="${droot}/${dgroup}"
     local filedst="${dirdst}/${fdst}"
