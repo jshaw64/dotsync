@@ -1,5 +1,8 @@
 #!/bin/bash
 
+DEBUG=0
+VERBOSE=0
+
 E_FSRC=50
 E_DROOT=51
 E_FDST=52
@@ -116,8 +119,6 @@ main()
     . "$ctx/lib/fsutils/fsutils.sh"
     . "$ctx/lib/config/config.sh"
 
-    DEBUG=$(config_get "$CONF_KEY_DEBUG")
-    VERBOSE=$(config_get "$CONF_KEY_VERBOSE")
 
     local i=0
     local size="${#conf_static[@]}"
