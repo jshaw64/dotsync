@@ -36,6 +36,47 @@ E_TASK_COPY=91
 E_TASK_ARCHIVE=92
 E_TASK_LINK=94
 
+parse_parms()
+{
+
+  local config_file="$DEF_CONFIG_FILE"
+  local group_name="$DEF_GROUP_NAME"
+  local file_src_path="$DEF_FILE_SRC_PATH"
+  local file_dst_path="$DEF_FILE_DST_PATH"
+  local archive_dir="$DEF_ARCHIVE_DIR"
+  local mode_copy="$DEF_MODE_COPY"
+  local mode_link="$DEF_MODE_LINK"
+  local mode_archive="$DEF_MODE_ARCHIVE"
+#
+#  local OPTIND=1
+#  while getopts "d:f:p:n:r:k:hDv" opt; do
+#    case "$opt" in
+#      h )
+#        usage
+#        exit 0
+#        ;;
+#      D )
+#        DEBUG=1
+#        ;;
+#      v )
+#        VERBOSE=1
+#        ;;
+#      d )
+#        :
+#        ;;
+#    esac
+#  done
+#
+  config_set "$KEY_CONFIG_FILE" "$config_file"
+  config_set "$KEY_GROUP_NAME" "$group_name"
+  config_set "$KEY_FILE_SRC_PATH" "$file_src_path"
+  config_set "$KEY_FILE_DST_PATH" "$file_dst_path"
+  config_set "$KEY_ARCHIVE_DIR" "$archive_dir"
+  config_set "$KEY_MODE_COPY" "$mode_copy"
+  config_set "$KEY_MODE_LINK" "$mode_link"
+  config_set "$KEY_MODE_ARCHIVE" "$mode_archive"
+}
+
 task_archive_src()
 {
   local dir_src="$1"
