@@ -159,6 +159,7 @@ main()
     task_link_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
 
     local archive_dir=$(config_get "$KEY_ARCHIVE_DIR")
+    task_archive_src "$file_src_dir" "$archive_dir" "$file_src_name"
 }
 
 main "$@"
