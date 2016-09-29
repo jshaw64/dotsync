@@ -17,6 +17,7 @@ KEY_FILE_DST_PATH="file_dst"
 
 E_DIR=90
 E_TASK_COPY=91
+E_TASK_ARCHIVE=92
 
 task_archive_src()
 {
@@ -24,7 +25,11 @@ task_archive_src()
   local dir_dst="$2"
   local file_src="$3"
 
-  mv "$fsrc" "$archivedir"
+  fs_copy_file "$dir_src" "$dir_dst" "$file_src" "$file_dst"
+  (( $? > 0 )) && exit $E_TASK_ARCHIVE
+
+  fs_rm_file "$dir_src" "$file_src"
+  (( $? > 0 )) && exit $E_TASK_ARCHIVE
 }
 
 task_copy_to_dst()
