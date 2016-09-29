@@ -20,8 +20,9 @@ E_TASK_COPY=91
 
 task_archive_src()
 {
-  local fsrc="$1"
-  local archivedir="$2"
+  local dir_src="$1"
+  local dir_dst="$2"
+  local file_src="$3"
 
   mv "$fsrc" "$archivedir"
 }
