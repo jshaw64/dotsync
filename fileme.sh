@@ -9,6 +9,19 @@ E_FDST=52
 E_ARCH=53
 E_STATE=70
 
+DEF_CONFIG_FILE=".fileme"
+
+DEF_GROUP="default"
+DEF_FILE_SRC_PATH=./testdata/src/*
+DEF_FILE_DST_PATH=./testdata/dst
+DEF_ARCHIVE_DIR=./testdata/arch
+DEF_MODE_COPY=1
+DEF_MODE_LINK=0
+DEF_MODE_ARCHIVE=0
+
+KEY_CONFIG_FILE="conf"
+KEY_GROUP_BEGIN="group_begin"
+KEY_GROUP_END="group_end"
 KEY_GROUP="group"
 KEY_DIR_SRC="dir_src"
 KEY_DIR_DST="dir_dst"
