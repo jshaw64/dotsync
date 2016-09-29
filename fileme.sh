@@ -210,10 +210,25 @@ main()
   . "$ctx/lib/fsutils/fsutils.sh"
   . "$ctx/lib/config/config.sh"
 
-  config_parse_file "sync_group_begin" "sync_group_end" ".syncconf"
-  local config_values=$(config_get 1)
+  parse_parms "$@"
 
-  fileme_prepare_config "$config_values"
+  local config_file=$(config_get "$KEY_CONFIG_FILE")
+  fs_is_valid_file "$config_file"
+  if [ $? -gt 0 ]; then
+  else
+    while :; do
+      local group_begin=$(config_get "$KEY_GROUP_BEGIN")
+      local group_end=$(config_get "$KEY_GROUP_END")
+      config_parse_file "$KEY_GROUP_BEGIN" "$KEY_GROUP_END" ".syncconf"
+      local config_values=$(config_get 1)
+      [ -z "$config_values" ] && break
+      fileme_prepare_config "$config_values"
+    done
+  fi
+
+
+
+
 
   local group_name=$(config_get "$KEY_GROUP")
   local mode_copy=$(config_get "$KEY_MODE_COPY")
