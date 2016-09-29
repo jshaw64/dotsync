@@ -16,6 +16,7 @@ KEY_FILE_SRC_PATH="file_src"
 KEY_FILE_DST_PATH="file_dst"
 
 E_DIR=90
+E_FILE=93
 E_TASK_COPY=91
 E_TASK_ARCHIVE=92
 
@@ -24,6 +25,15 @@ task_archive_src()
   local dir_src="$1"
   local dir_dst="$2"
   local file_src="$3"
+
+  fs_is_valid_dir "$dir_src"
+  (( $? > 0 )) && exit $E_DIR
+
+  fs_is_valid_dir "$dir_dst"
+  (( $? > 0 )) && exit $E_DIR
+
+  fs_is_valid_file "$dir_src" "$file_src"
+  (( $? > 0 )) && exit $E_FILE
 
   fs_copy_file "$dir_src" "$dir_dst" "$file_src" "$file_dst"
   (( $? > 0 )) && exit $E_TASK_ARCHIVE
