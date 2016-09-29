@@ -244,7 +244,7 @@ main()
     while :; do
       local group_begin=$(config_get "$KEY_GROUP_BEGIN")
       local group_end=$(config_get "$KEY_GROUP_END")
-      config_parse_file "$KEY_GROUP_BEGIN" "$KEY_GROUP_END" ".syncconf"
+      config_parse_file "$group_begin" "$group_end" "$config_file"
       local config_values=$(config_get 1)
       [ -z "$config_values" ] && break
       fileme_prepare_config "$config_values"
