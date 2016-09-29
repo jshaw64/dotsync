@@ -40,6 +40,8 @@ task_archive_src()
 
   fs_rm_file "$dir_src" "$file_src"
   (( $? > 0 )) && exit $E_TASK_ARCHIVE
+
+  return 0
 }
 
 task_copy_to_dst()
