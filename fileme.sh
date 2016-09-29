@@ -18,6 +18,14 @@ KEY_FILE_DST_PATH="file_dst"
 E_DIR=90
 E_TASK_COPY=91
 
+task_archive_src()
+{
+  local fsrc="$1"
+  local archivedir="$2"
+
+  mv "$fsrc" "$archivedir"
+}
+
 task_copy_to_dst()
 {
   local dir_src="$1"
@@ -40,13 +48,6 @@ task_copy_to_dst()
   return 0
 }
 
-do_archive()
-{
-    local fsrc="$1"
-    local archivedir="$2"
-
-    mv "$fsrc" "$archivedir"
-}
 
 do_link()
 {
@@ -167,93 +168,108 @@ main()
     . "$ctx/lib/fsutils/fsutils.sh"
     . "$ctx/lib/config/config.sh"
 
+    config_parse_file "sync_group_begin" "sync_group_end" ".syncconf"
+    local config_values=$(config_get 1)
 
-    local i=0
-    local size="${#conf_static[@]}"
-    while [ $i -lt $size ]; do
+    fileme_prepare_config "$config_values"
 
-        (( DEBUG || VERBOSE )) && echo "====================="
-        (( DEBUG || VERBOSE )) && echo "Config index [${i}]"
-        (( DEBUG || VERBOSE )) && echo "====================="
+    local group_name=$(config_get "$KEY_GROUP")
+    local file_src_path=$(config_get "$KEY_FILE_SRC_PATH")
+    local file_src_dir=$(fs_parse_path_no_file "$file_src_path")
+    local file_src_name=$(fs_parse_file_from_path "$file_src_path")
+    local file_dst_path=$(config_get "$KEY_FILE_DST_PATH")
+    local file_dst_dir=$(fs_parse_path_no_file "$file_dst_path")
+    local file_dst_name=$(fs_parse_file_from_path "$file_dst_path")
 
-        (( DEBUG || VERBOSE )) && echo "Parsing config..."
+    task_copy_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
 
-        config_parse $i
-
-        local fsrc=$(config_get "$CONF_KEY_FSRC")
-        local fdst=$(config_get "$CONF_KEY_FDST")
-        local droot=$(config_get "$CONF_KEY_DROOT")
-        local dgroup=$(config_get "$CONF_KEY_DGROUP")
-        local darch=$(config_get "$CONF_KEY_DARCH")
-
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DARCH}], Value [${darch}]\n"
-
-        (( DEBUG || VERBOSE )) && echo "Validating state (before)..."
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
-
-        validate_before "$fsrc" "$droot"
-        if [ $? -gt 0 ]; then
-            echo "Error: unable to validate state (before)"
-            exit $E_STATE
-        fi
-        
-        (( DEBUG || VERBOSE )) && printf "\tSuccessfully validated state (before)\n"
-
-        local should_copy=$(config_get "$CONF_KEY_COPY")
-        if [ $should_copy -eq 1 ]; then
-            (( DEBUG || VERBOSE )) && echo "Copying src file to dst/group..."
-            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
-            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
-            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
-            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
-
-            do_copy "$fsrc" "$fdst" "$droot" "$dgroup"
-        fi
-
-        local should_archive=$(config_get "$CONF_KEY_LINK")
-        if [ $should_archive -eq 1 ]; then
-            (( DEBUG || VERBOSE )) && echo "Moving file to archive..."
-            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
-            (( DEBUG || VERBOSE )) && printf "\tKey [darch], Value [${darch}]\n"
-
-            do_archive "$fsrc" "$darch"
-        fi
-
-        local should_link=$(config_get "$CONF_KEY_LINK")
-        if [ $should_link -eq 1 ]; then
-            (( DEBUG || VERBOSE )) && echo "Creating symlink..."
-            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
-            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
-            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
-            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
-
-            do_link "$fsrc" "$fdst" "$droot" "$dgroup"
-        fi
-
-        (( DEBUG || VERBOSE )) && echo "Validating state (after)..."
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DARCH}], Value [${darch}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_COPY}], Value [${should_copy}]\n"
-        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_LINK}], Value [${should_link}]\n"
-
-        validate_after "$fsrc" "$fdst" "$droot" "$dgroup" "$darch" "$should_copy" "$should_link"
-        if [ $? -gt 0 ]; then
-            echo "Error: unable to validate state (after)"
-            exit $E_STATE
-        fi
-
-        (( DEBUG || VERBOSE )) && printf "\tSuccessfully validated state (after)\n"
-
-        (( i++ ))
-    done
+  exit
+#    local i=0
+#    local size="${#conf_static[@]}"
+#    while [ $i -lt $size ]; do
+#
+#        (( DEBUG || VERBOSE )) && echo "====================="
+#        (( DEBUG || VERBOSE )) && echo "Config index [${i}]"
+#        (( DEBUG || VERBOSE )) && echo "====================="
+#
+#        (( DEBUG || VERBOSE )) && echo "Parsing config..."
+#
+#        config_parse $i
+#
+#        local fsrc=$(config_get "$CONF_KEY_FSRC")
+#        local fdst=$(config_get "$CONF_KEY_FDST")
+#        local droot=$(config_get "$CONF_KEY_DROOT")
+#        local dgroup=$(config_get "$CONF_KEY_DGROUP")
+#        local darch=$(config_get "$CONF_KEY_DARCH")
+#
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DARCH}], Value [${darch}]\n"
+#
+#        (( DEBUG || VERBOSE )) && echo "Validating state (before)..."
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
+#
+#        validate_before "$fsrc" "$droot"
+#        if [ $? -gt 0 ]; then
+#            echo "Error: unable to validate state (before)"
+#            exit $E_STATE
+#        fi
+#        
+#        (( DEBUG || VERBOSE )) && printf "\tSuccessfully validated state (before)\n"
+#
+#        local should_copy=$(config_get "$CONF_KEY_COPY")
+#        if [ $should_copy -eq 1 ]; then
+#            (( DEBUG || VERBOSE )) && echo "Copying src file to dst/group..."
+#            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
+#            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
+#            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
+#            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
+#
+#            do_copy "$fsrc" "$fdst" "$droot" "$dgroup"
+#        fi
+#
+#        local should_archive=$(config_get "$CONF_KEY_LINK")
+#        if [ $should_archive -eq 1 ]; then
+#            (( DEBUG || VERBOSE )) && echo "Moving file to archive..."
+#            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
+#            (( DEBUG || VERBOSE )) && printf "\tKey [darch], Value [${darch}]\n"
+#
+#            do_archive "$fsrc" "$darch"
+#        fi
+#
+#        local should_link=$(config_get "$CONF_KEY_LINK")
+#        if [ $should_link -eq 1 ]; then
+#            (( DEBUG || VERBOSE )) && echo "Creating symlink..."
+#            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
+#            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
+#            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
+#            (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
+#
+#            do_link "$fsrc" "$fdst" "$droot" "$dgroup"
+#        fi
+#
+#        (( DEBUG || VERBOSE )) && echo "Validating state (after)..."
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FSRC}], Value [${fsrc}]\n"
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_FDST}], Value [${fdst}]\n"
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DROOT}], Value [${droot}]\n"
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DGROUP}], Value [${dgroup}]\n"
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_DARCH}], Value [${darch}]\n"
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_COPY}], Value [${should_copy}]\n"
+#        (( DEBUG || VERBOSE )) && printf "\tKey [${CONF_KEY_LINK}], Value [${should_link}]\n"
+#
+#        validate_after "$fsrc" "$fdst" "$droot" "$dgroup" "$darch" "$should_copy" "$should_link"
+#        if [ $? -gt 0 ]; then
+#            echo "Error: unable to validate state (after)"
+#            exit $E_STATE
+#        fi
+#
+#        (( DEBUG || VERBOSE )) && printf "\tSuccessfully validated state (after)\n"
+#
+#        (( i++ ))
+#    done
 }
 
 main "$@"
