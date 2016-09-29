@@ -67,7 +67,7 @@ parse_parms()
 #  done
 #
   config_set "$KEY_CONFIG_FILE" "$config_file"
-  config_set "$KEY_GROUP_NAME" "$group_name"
+  config_set "$KEY_GROUP" "$group_name"
   config_set "$KEY_FILE_SRC_PATH" "$file_src_path"
   config_set "$KEY_FILE_DST_PATH" "$file_dst_path"
   config_set "$KEY_ARCHIVE_DIR" "$archive_dir"
