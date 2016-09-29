@@ -28,9 +28,8 @@ task_copy_to_dst()
    fs_is_valid_dir "$dir_src"
    (( $? > 0 )) && exit $E_DIR
 
-    if [ ! -d "$dirdst" ]; then
-        mkdir "$dirdst"
-    fi
+   fs_is_valid_dir "$dir_dst"
+   (( $? > 0 )) && mkdir "$dir_dst"
 
     cp "$fsrc" "$filedst"
 }
