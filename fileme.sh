@@ -20,6 +20,7 @@ E_DIR=90
 E_FILE=93
 E_TASK_COPY=91
 E_TASK_ARCHIVE=92
+E_TASK_LINK=94
 
 task_archive_src()
 {
@@ -65,6 +66,9 @@ task_link_to_dst()
 
   cd "$dir_dst"
   ln -s "$file_dst_path" "$file_src_path"
+
+  fs_is_valid_link "$dir_src" "$file_src_name" "$dir_dst" "$file_dst_name"
+  (( $? > 0 )) && exit $E_TASK_LINK
 }
 
 task_copy_to_dst()
