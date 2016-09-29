@@ -53,6 +53,9 @@ task_link_to_dst()
   local file_dst_name="$4"
   local file_dst_path="${dir_dst}/${file_dst_name}"
 
+  fs_is_valid_dir "$dir_src"
+  (( $? > 0 )) && exit $E_DIR
+
   fs_is_valid_dir "$dir_dst"
   (( $? > 0 )) && mkdir "$dir_dst"
 
