@@ -21,9 +21,8 @@ task_copy_to_dst()
    local file_dst="$2"
    local dir_src="$3"
    local dir_dst="$4"
+   local file_path="${dir_dst}/${file_dst}"
 
-    local dirdst="${droot}/${dgroup}"
-    local filedst="${dirdst}/${fdst}"
 
     if [ ! -d "$dirdst" ]; then
         mkdir "$dirdst"
