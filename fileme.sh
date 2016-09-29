@@ -15,6 +15,9 @@ KEY_DIR_DST="dir_dst"
 KEY_FILE_SRC_PATH="file_src"
 KEY_FILE_DST_PATH="file_dst"
 KEY_ARCHIVE_DIR="arch_dir"
+KEY_MODE_COPY="mode_copy"
+KEY_MODE_LINK="mode_link"
+KEY_MODE_ARCHIVE="mode_archive"
 
 E_DIR=90
 E_FILE=93
@@ -100,6 +103,9 @@ fileme_prepare_config()
   local file_src_path=
   local file_dst_path=
   local archive_dir=
+  local mode_copy=
+  local mode_link=
+  local mode_archive=
 
   local OIFS="$IFS"
   IFS=:
@@ -119,6 +125,15 @@ fileme_prepare_config()
       3 )
         archive_dir="$val"
         ;;
+      4 )
+        mode_copy="$val"
+        ;;
+      5 )
+        mode_link="$val"
+        ;;
+      6 )
+        mode_archive="$val"
+        ;;
     esac
     (( i++ ))
   done
@@ -129,6 +144,9 @@ fileme_prepare_config()
   config_set "$KEY_FILE_SRC_PATH" "$file_src_path"
   config_set "$KEY_FILE_DST_PATH" "$file_dst_path"
   config_set "$KEY_ARCHIVE_DIR" "$archive_dir"
+  config_set "$KEY_MODE_COPY" "$mode_copy"
+  config_set "$KEY_MODE_LINK" "$mode_link"
+  config_set "$KEY_MODE_ARCHIVE" "$mode_archive"
 }
 
 
@@ -146,6 +164,9 @@ main()
   fileme_prepare_config "$config_values"
 
   local group_name=$(config_get "$KEY_GROUP")
+  local mode_copy=$(config_get "$KEY_MODE_COPY")
+  local mode_link=$(config_get "$KEY_MODE_LINK")
+  local mode_archive=$(config_get "$KEY_MODE_ARCHIVE")
 
   local file_src_path=$(config_get "$KEY_FILE_SRC_PATH")
   local file_src_dir=$(fs_parse_path_no_file "$file_src_path")

@@ -3,8 +3,9 @@ sync_group_begin
   file_src_path=/Users/joelshaw/Documents/test-data/src/.test1-basic
   file_dst_path=/Users/joelshaw/Documents/test-data/dst/.tst01-renamed
   archive_dir=/Users/joelshaw/Documents/test-data/arch
+  mode_copy=1
   mode_link=1
-  mode_copy=2
+  mode_archive=1
 sync_group_end
 
 sync_group_begin
