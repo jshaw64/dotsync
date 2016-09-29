@@ -241,8 +241,10 @@ main()
   local file_dst_path=$(config_get "$KEY_FILE_DST_PATH")
   local file_dst_dir=$(fs_parse_path_no_file "$file_dst_path")
   local file_dst_name=$(fs_parse_file_from_path "$file_dst_path")
+  if [ -z "$file_dst_name" ]; then
+    file_dst_name="$file_src_name"
+  fi
   task_copy_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
-
 
   task_link_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
 
