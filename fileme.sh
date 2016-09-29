@@ -31,7 +31,10 @@ task_copy_to_dst()
    fs_is_valid_dir "$dir_dst"
    (( $? > 0 )) && mkdir "$dir_dst"
 
-    cp "$fsrc" "$filedst"
+   fs_is_valid_dir "$dir_dst"
+   (( $? > 0 )) && exit $E_DIR
+
+   cp "$fsrc" "$filedst"
 }
 
 do_archive()
