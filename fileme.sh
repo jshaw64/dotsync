@@ -12,7 +12,7 @@ E_STATE=70
 DEF_CONFIG_FILE=".fileme"
 
 DEF_GROUP="default"
-DEF_FILE_SRC_PATH=./testdata/src/*
+DEF_FILE_SRC_PATH=./testdata/src/.testrc
 DEF_FILE_DST_PATH=./testdata/dst
 DEF_ARCHIVE_DIR=./testdata/arch
 DEF_MODE_COPY=1
@@ -38,7 +38,6 @@ E_TASK_LINK=94
 
 parse_parms()
 {
-
   local config_file="$DEF_CONFIG_FILE"
   local group_name="$DEF_GROUP_NAME"
   local file_src_path="$DEF_FILE_SRC_PATH"
@@ -215,7 +214,8 @@ run_tasks()
   local file_dst_path=$(config_get "$KEY_FILE_DST_PATH")
   local file_dst_dir=$(fs_parse_path_no_file "$file_dst_path")
   local file_dst_name=$(fs_parse_file_from_path "$file_dst_path")
-  if [ -z "$file_dst_name" ]; then
+  fs_is_valid_file "$file_dst_dir" "$file_dst_name"
+  if [ $? -gt 0 ]; then
     file_dst_name="$file_src_name"
   fi
   task_copy_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
