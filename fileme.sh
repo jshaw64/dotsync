@@ -122,7 +122,6 @@ task_link_to_dst()
   fs_is_valid_dir "$dir_dst"
   (( $? > 0 )) && exit $E_DIR
 
-  cd "$dir_dst"
   ln -s "$file_dst_path" "$file_src_path"
 
   fs_is_valid_link "$dir_src" "$file_src_name" "$dir_dst" "$file_dst_name"
