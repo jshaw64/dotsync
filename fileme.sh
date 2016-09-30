@@ -215,6 +215,14 @@ run_tasks()
   local file_dst_path=$(config_get "$KEY_FILE_DST_PATH")
   local file_dst_dir=$(fs_parse_path_no_file "$file_dst_path")
   local file_dst_name=$(fs_parse_file_from_path "$file_dst_path")
+
+  (( DEBUG || VERBOSE )) && printf "\tfile_src_path=$file_src_path\n"
+  (( DEBUG )) && printf "\tfile_src_dir=$file_src_dir\n"
+  (( DEBUG )) && printf "\tfile_src_name=$file_src_name\n"
+  (( DEBUG || VERBOSE )) && printf "\tfile_dst_path=$file_dst_path\n"
+  (( DEBUG )) && printf "\tfile_dst_dir=$file_dst_dir\n"
+  (( DEBUG )) && printf "\tfile_dst_name=$file_dst_name\n"
+
   fs_is_valid_file "$file_dst_dir" "$file_dst_name"
   if [ $? -gt 0 ]; then
     file_dst_name="$file_src_name"
