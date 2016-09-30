@@ -1,0 +1,29 @@
+group_begin
+  sync_group=group1
+  file_src_path=./testdata/src/.test1-basic
+  file_dst_path=./testdata/dst/.test1-renamed
+  archive_dir=./testdata/archive
+  mode_copy=1
+  mode_link=0
+  mode_archive=0
+group_end
+
+group_begin
+  sync_group=group2
+  file_src_path=./testdata/src/.test2 with spaces in file
+  file_dst_path=./testdata/dst/.test02-renamed
+  archive_dir=./testdata/archive
+  mode_copy=1
+  mode_link=0
+  mode_archive=0
+group_end
+
+group_begin
+  sync_group=group3
+  file_src_path=./testdata/src/with spaces in dir/.test3
+  file_dst_path=./testdata/dst/.test03-renamed
+  archive_dir=./testdata/archive
+  mode_copy=1
+  mode_link=0
+  mode_archive=0
+group_end
