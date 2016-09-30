@@ -1,6 +1,9 @@
 #!/bin/bash
 
-DEBUG=0
+APP_LN=/usr/local/bin/fileme
+APP_PATH=$(readlink $APP_LN)
+
+DEBUG=1
 VERBOSE=0
 
 E_FSRC=50
@@ -9,7 +12,7 @@ E_FDST=52
 E_ARCH=53
 E_STATE=70
 
-DEF_CONFIG_FILE_PATH="./test/.fileme"
+DEF_CONFIG_FILE_PATH="${APP_PATH}/test/.fileme"
 DEF_GROUP="default"
 DEF_GROUP_BEGIN="group_begin"
 DEF_GROUP_END="group_end"
@@ -249,10 +252,8 @@ run_tasks()
 
 main()
 {
-  local ctx="${BASH_SOURCE%/*}"
-  if [[ ! -d "$ctx" ]]; then ctx="$PWD"; fi
-  . "$ctx/lib/fsutils/fsutils.sh"
-  . "$ctx/lib/config/config.sh"
+  . ${APP_PATH}/lib/config/config.sh
+  . ${APP_PATH}/lib/fsutils/fsutils.sh
 
   parse_parms "$@"
 
