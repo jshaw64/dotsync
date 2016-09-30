@@ -18,7 +18,7 @@ DEF_MODE_COPY=1
 DEF_MODE_LINK=0
 DEF_MODE_ARCHIVE=0
 
-KEY_CONFIG_FILE="conf"
+KEY_CONFIG_FILE_PATH="conf_path"
 KEY_GROUP_BEGIN="group_begin"
 KEY_GROUP_END="group_end"
 KEY_GROUP="group"
@@ -37,7 +37,7 @@ E_TASK_LINK=94
 
 parse_parms()
 {
-  local config_file="$DEF_CONFIG_FILE"
+  local config_file_path="$DEF_CONFIG_FILE_PATH"
   local group_name="$DEF_GROUP_NAME"
   local file_src_path="$DEF_FILE_SRC_PATH"
   local file_dst_path="$DEF_FILE_DST_PATH"
@@ -65,7 +65,7 @@ parse_parms()
 #    esac
 #  done
 #
-  config_set "$KEY_CONFIG_FILE" "$config_file"
+  config_set "$KEY_CONFIG_FILE_PATH" "$config_file_path"
   config_set "$KEY_GROUP" "$group_name"
   config_set "$KEY_FILE_SRC_PATH" "$file_src_path"
   config_set "$KEY_FILE_DST_PATH" "$file_dst_path"
@@ -234,8 +234,10 @@ main()
 
   parse_parms "$@"
 
-  local config_file=$(config_get "$KEY_CONFIG_FILE")
-  fs_is_valid_file "$config_file"
+  local config_file_path=$(config_get "$KEY_CONFIG_FILE_PATH")
+  local config_file_dir=$(fs_parse_path_no_file "$config_file_path")
+  local config_file_name=$(fs_parse_file_from_path "$config_file_path")
+  fs_is_valid_file "$config_file_dir" "$config_file_name"
 
   if [ $? -gt 0 ]; then
     run_tasks
