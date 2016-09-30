@@ -243,10 +243,8 @@ main()
     run_tasks
   else
     local idx=1
+    config_parse_file "$DEF_GROUP_BEGIN" "$DEF_GROUP_END" "$config_file_path"
     while :; do
-      local group_begin=$(config_get "$KEY_GROUP_BEGIN")
-      local group_end=$(config_get "$KEY_GROUP_END")
-      config_parse_file "$group_begin" "$group_end" "$config_file"
       local config_values=$(config_get $idx)
       [ -z "$config_values" ] && break
       fileme_prepare_config "$config_values"
