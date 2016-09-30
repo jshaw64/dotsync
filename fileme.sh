@@ -9,8 +9,7 @@ E_FDST=52
 E_ARCH=53
 E_STATE=70
 
-DEF_CONFIG_FILE=".fileme"
-
+DEF_CONFIG_FILE_PATH="./test/.fileme"
 DEF_GROUP="default"
 DEF_FILE_SRC_PATH=./testdata/src/.testrc
 DEF_FILE_DST_PATH=./testdata/dst
