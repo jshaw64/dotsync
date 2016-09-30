@@ -126,6 +126,8 @@ task_link_to_dst()
 
   fs_is_valid_link "$dir_src" "$file_src_name" "$dir_dst" "$file_dst_name"
   (( $? > 0 )) && exit $E_TASK_LINK
+
+  return 0
 }
 
 task_copy_to_dst()
