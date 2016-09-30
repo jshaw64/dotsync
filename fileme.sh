@@ -11,6 +11,8 @@ E_STATE=70
 
 DEF_CONFIG_FILE_PATH="./test/.fileme"
 DEF_GROUP="default"
+DEF_GROUP_BEGIN="group_begin"
+DEF_GROUP_END="group_end"
 DEF_FILE_SRC_PATH=./testdata/src/.testrc
 DEF_FILE_DST_PATH=./testdata/dst
 DEF_ARCHIVE_DIR=./testdata/arch
