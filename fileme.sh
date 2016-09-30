@@ -227,9 +227,12 @@ run_tasks()
   if [ $? -gt 0 ]; then
     file_dst_name="$file_src_name"
   fi
-  task_copy_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
 
-  task_link_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
+  if [ $mode_copy -eq 1 ]; then
+    (( DEBUG || VERBOSE )) && echo "Running Task: Copy..."
+    task_copy_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
+  fi
+
 
   local archive_dir=$(config_get "$KEY_ARCHIVE_DIR")
   task_archive_src "$file_src_dir" "$archive_dir" "$file_src_name"
