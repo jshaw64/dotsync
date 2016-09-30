@@ -238,16 +238,17 @@ run_tasks()
     task_copy_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
   fi
 
-  if [ $mode_link -eq 1 ]; then
-    (( DEBUG || VERBOSE )) && echo "Running Task: Link..."
-    task_link_to_dst "$file_src_dir" "$file_dst_dir" "$file_src_name" "$file_dst_name"
-  fi
 
   local archive_dir=$(config_get "$KEY_ARCHIVE_DIR")
 
   if [ $mode_archive -eq 1 ]; then
     (( DEBUG || VERBOSE )) && echo "Running Task: Archive..."
     task_archive_src "$file_src_dir" "$archive_dir" "$file_src_name"
+  fi
+
+  if [ $mode_link -eq 1 ]; then
+    (( DEBUG || VERBOSE )) && echo "Running Task: Link..."
+    task_link_to_dst "$file_dst_dir" "$file_src_dir" "$file_src_name" "$file_dst_name"
   fi
 }
 
