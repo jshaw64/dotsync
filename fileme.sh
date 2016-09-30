@@ -149,13 +149,13 @@ task_copy_to_dst()
 fileme_prepare_config()
 {
   local config_values="$1"
-  local group_name=
-  local file_src_path=
-  local file_dst_path=
-  local archive_dir=
-  local mode_copy=
-  local mode_link=
-  local mode_archive=
+  local group_name=$(config_get "$KEY_GROUP")
+  local file_src_path=$(config_get "$KEY_FILE_SRC_PATH")
+  local file_dst_path=$(config_get "$KEY_FILE_DST_PATH")
+  local archive_dir=$(config_get "$KEY_ARCHIVE_DIR")
+  local mode_copy=$(config_get "$KEY_MODE_COPY")
+  local mode_link=$(config_get "$KEY_MODE_LINK")
+  local mode_archive=$(config_get "$KEY_MODE_ARCHIVE")
 
   local OIFS="$IFS"
   IFS=:
